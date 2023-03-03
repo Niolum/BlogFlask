@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content">
+
+    {% if current_user.is_authenticated %}
+    <h1>Вы уже вошли</h1>
+
+    {% else %}
+
+    <h1>Вход</h1>
+
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+    <div class="alert alert-{{category}}" onclick="close">
+        <span>Error: {{ message }}</span>
+        <button class class="closebtn" onclick='$("#content").hide();'>&#10006;</button>
+        <label for="pop-checkbox" class="close-block"></label>
+    </div>
+    {% endfor %}
+
+
+
+    <form action="" method="post">
+        {{ form.csrf_token() }}
+
+        {% for field in form if field.name != "csrf_token" %}
+        {% if field.name != "submit" %}
+        <p>{{ field.label() }}</p>
+        {% endif %}
+        <p>{{ field }}
+            {% for error in field.errors %}
+            {{ erorr }}
+            {% endfor %}
+        </p>
+        {% endfor %}
+    </form>
+
+    {% endif %}
+</div>
+
+
+{% endblock content %}

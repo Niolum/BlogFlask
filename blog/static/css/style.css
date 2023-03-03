@@ -1,0 +1,54 @@
+@media (min-width: 800px) {  
+    aside {position: static; width: 100%;}
+    .layout {--sidebar-min-width: 264px;} 
+  }
+  
+@media (max-width: 799px) { 
+    aside {display: none;}
+}
+
+html, body {
+    margin: 0;
+    color: rgb(0, 0, 0);
+    height:100%;
+    font-family:"Open Sans", Verdana, Tahoma, Arial, Helvetica, sans-serif;
+  }
+
+.wrapper {
+    position: relative;
+    height: 100%;
+}
+
+.content {
+    box-sizing: border-box;
+    min-height: 90%;
+    padding-bottom: 90px;
+}
+
+
+
+
+/* footer */
+
+
+.footer {
+    height: 80px;
+    margin-top: -80px;
+}
+
+.footer p{
+    color:#fff;
+    margin-left: 35px; 
+}
+
+.footer ul{
+    margin-right: 35px;
+}
+
+.foot-link a{
+    color:#fff
+}
+
+.wrapper {
+    height: 100%;
+}
