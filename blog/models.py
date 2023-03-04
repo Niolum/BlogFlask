@@ -1,9 +1,10 @@
+import os
 import datetime
 
 from flask_login import UserMixin
 
 from blog import db
-from blog.config import BASE_DIR
+from .config import Config
 
 
 class User(UserMixin, db.Model):
@@ -21,12 +22,26 @@ class User(UserMixin, db.Model):
         return f"User {self.username}"
     
     @staticmethod
-    def save_image(image_data, username):
-        with open(f"{BASE_DIR}/media/users/{username}/avatar.png", "w") as file:
-            file.write(image_data)
-        image_name = f"{username}_avatar"
-        image_path = f"{BASE_DIR}/media/users/{username}/avatar.png"
+    def save_image(file, username, id):
+        if not os.path.exists(f"{Config.UPLOAD_FOLDER}\\users\\{id}\\{username}"):
+            os.makedirs(f"{Config.UPLOAD_FOLDER}\\users\\{id}\\{username}")
+
+        file.save(os.path.join(f"{Config.UPLOAD_FOLDER}\\users\\{id}\\{username}", file.filename))
+        image_name = file.filename
+        image_path = f"users/{id}/{username}/{file.filename}"
         return image_name, image_path
+    
+    def delete_image(self):
+        if self.photo_path:
+            path_to_photo = (self.photo_path).replace("/", "\\")
+
+            if os.path.exists(os.path.join(Config.UPLOAD_FOLDER, path_to_photo)):
+                os.remove(os.path.join(Config.UPLOAD_FOLDER, path_to_photo))
+
+        self.photo_path = None
+        self.photo_name = None
+        db.session.add(self)
+        db.session.commit()
 
 
 tags = db.Table('tags',

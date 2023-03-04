@@ -4,13 +4,15 @@ from flask_migrate import Migrate
 from flask import render_template
 from flask_login import LoginManager
 
+from .config import Config
+
 
 db = SQLAlchemy()
 migrate = Migrate()
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_pyfile('config.py')
+    app.config.from_object(Config)
 
     with app.app_context():
         db.init_app(app)

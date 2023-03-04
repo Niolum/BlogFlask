@@ -6,6 +6,13 @@
     <header>
         <div>
             <h1>{{ user['username'] }}</h1>
+            {% if user.photo_path %}
+                <div>
+                    <a href="{{ url_for('static', filename='media/' + user.photo_path) }}">
+                        <img src="{{ url_for('static', filename='media/' + user.photo_path) }}">
+                    </a>
+                </div>
+            {% endif %}
         </div>
     </header>
 

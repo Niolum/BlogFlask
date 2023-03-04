@@ -25,4 +25,4 @@ class LoginForm(FlaskForm):
 class ProfileForm(FlaskForm):
     username = StringField("Имя пользователя: ", validators=[validators.DataRequired()])
     photo = FileField("Аватарка", validators=[FileAllowed(["jpeg", "jpg", "png"])])
-    submit = SubmitField("Изменить имя")
+    submit = SubmitField("Изменить данные")

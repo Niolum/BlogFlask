@@ -1,8 +1,11 @@
 from flask import Blueprint, request, redirect, url_for, render_template, flash
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from flask_login import login_required, login_user, logout_user
 
 from .models import User
+from .config import Config
+from .utils import allowed_file
 from .forms import RegistrationForm, LoginForm, ProfileForm
 from . import db
 
@@ -20,13 +23,10 @@ def register():
         if user:
             flash(f"Пользователь c именем {username} уже зарегистрирован", 'danger')
         else:
-            file = None
-            if request.files['photo']:
-                file = request.file["photo"]
-        
-            if file:
-                photo_name, photo_url = User.save_image(image_data=file, username=username)
-                user = User(username=username, password=generate_password_hash(password), photo_name=photo_name, photo_url=photo_url)
+            file = request.files["photo"]
+            if file and allowed_file(file.filename):
+                photo_name, photo_path = User.save_image(file=file, username=username, id=user.id)
+                user = User(username=username, password=generate_password_hash(password), photo_name=photo_name, photo_path=photo_path)
                 db.session.add(user)
                 db.session.commit()
                 flash('Пользователь был успешно создан') 
@@ -87,6 +87,17 @@ def profile(username):
     user = User.query.filter_by(username=username).first_or_404()
     if request.method == 'POST':
         username = request.form['username']
+        file = request.files["photo"]
+        if file and allowed_file(file.filename):
+            User.delete_image(user)
+            photo_name, photo_path = User.save_image(file=file, username=username, id=user.id)
+            user.username = username
+            user.photo_name = photo_name
+            user.photo_path = photo_path
+            db.session.add(user)
+            db.session.commit()
+            flash("Данные пользователя были изменены")
+            return redirect(url_for('users.profile', username=username))
 
         user.username = username
         db.session.add(user)

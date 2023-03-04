@@ -24,7 +24,9 @@ class Config(object):
     TESTING = False
     SECRET_KEY = SECRET_KEY
     SQLALCHEMY_DATABASE_URI = database_url
-
+    UPLOAD_FOLDER = os.path.join(BASE_DIR, "blog\static\media")
+    ALLOWED_EXTENSIONS = {"png", "jpeg", "jpg"}
+    
 
 class ProductionConfig(Config):
     DEBUG = False
