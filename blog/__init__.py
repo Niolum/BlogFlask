@@ -33,10 +33,10 @@ def create_app():
     def home():
         return render_template('index.html', title='Главная страница')
 
-    from .views import auth
+    from blog.views import auth
     app.register_blueprint(auth)
 
-    from .views import users
+    from blog.views import users
     app.register_blueprint(users)
     
     return app
