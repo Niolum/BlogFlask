@@ -9,7 +9,7 @@ from blog import db
 
 users = Blueprint('users', __name__, url_prefix='/users')
 
-@users.route('/users', methods=['GET'])
+@users.route('/', methods=['GET'])
 def all_users():
     users = User.query.all()
     return render_template('users/user_list.html', users=users)
