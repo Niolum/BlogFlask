@@ -38,5 +38,8 @@ def create_app():
 
     from blog.views import users
     app.register_blueprint(users)
+
+    from blog.views import tags
+    app.register_blueprint(tags)
     
     return app

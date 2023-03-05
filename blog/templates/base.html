@@ -41,9 +41,15 @@
                       <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('users.all_users') }}">Все пользователи</a>
                       </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('tags.all_tags') }}">Все теги</a>
+                      </li>
                       {% if current_user.is_authenticated %}
                       <li class="nav-item">
                         <a class="nav-link" href="#">Создать пост</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('tags.new_tag') }}">Создать тег</a>
                       </li>
                       <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('users.profile', username=current_user['username']) }}">Профиль</a>
