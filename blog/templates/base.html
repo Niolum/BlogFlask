@@ -39,17 +39,20 @@
                         <a class="nav-link active" aria-current="page" href="{{ url_for('home') }}">Главная</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('users.all_users') }}">Все пользователи</a>
+                        <a class="nav-link" href="{{ url_for('posts.all_posts') }}">Все статьи</a>
                       </li>
                       <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('tags.all_tags') }}">Все теги</a>
                       </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('users.all_users') }}">Все пользователи</a>
+                      </li>
                       {% if current_user.is_authenticated %}
                       <li class="nav-item">
-                        <a class="nav-link" href="#">Создать пост</a>
+                        <a class="nav-link" href="{{ url_for('posts.new_post') }}">Новая статья</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('tags.new_tag') }}">Создать тег</a>
+                        <a class="nav-link" href="{{ url_for('tags.new_tag') }}">Новый тег</a>
                       </li>
                       <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('users.profile', username=current_user['username']) }}">Профиль</a>

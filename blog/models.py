@@ -15,7 +15,7 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String, nullable=False)
     photo_name = db.Column(db.String, nullable=True)
     photo_path = db.Column(db.String, nullable=True)
-    posts = db.relationship('Post', lazy='select', backref=db.backref('user', lazy='joined'))
+    posts = db.relationship('Post', lazy='select', backref=db.backref('user', lazy='joined'), cascade="all, delete, delete-orphan")
     comments = db.relationship('Comment', lazy='select', backref=db.backref('user', lazy='joined'))
 
     def __repr__(self):
@@ -67,12 +67,27 @@ class Post(db.Model):
     def __repr__(self):
         return f"Post {self.title}"
     
-    def save_image(self, image_data, id):
-        with open(f"{BASE_DIR}/media/posts/{id}/post.png", "w") as file:
-            file.write(image_data)
-        image_name = f"{id}_post"
-        image_path = f"{BASE_DIR}/media/posts/{id}/post.png"
+    @staticmethod
+    def save_image(file, id):
+        if not os.path.exists(f"{Config.UPLOAD_FOLDER}\\posts\\{id}"):
+            os.makedirs(f"{Config.UPLOAD_FOLDER}\\posts\\{id}")
+
+        file.save(os.path.join(f"{Config.UPLOAD_FOLDER}\\posts\\{id}", file.filename))
+        image_name = file.filename
+        image_path = f"posts/{id}/{file.filename}"
         return image_name, image_path
+    
+    def delete_image(self):
+        if self.image_path:
+            path_to_photo = (self.image_path).replace("/", "\\")
+
+            if os.path.exists(os.path.join(Config.UPLOAD_FOLDER, path_to_photo)):
+                os.remove(os.path.join(Config.UPLOAD_FOLDER, path_to_photo))
+
+        self.image_path = None
+        self.image_name = None
+        db.session.add(self)
+        db.session.commit()
     
 
 class Tag(db.Model):
