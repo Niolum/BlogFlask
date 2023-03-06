@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="content">
+  {% for post in posts %}
+    <div class="post">
+        <a href="{{ url_for('posts.get_post', id=post.id) }}"><h2>{{ post['title'] }}</h2></a>
+        {% if post.image_path %}
+            <div><a href="{{ url_for('static', filename='media/' + post.image_path) }}"><img src="{{ url_for('static', filename='media/' + post.image_path) }}"></a></div>
+        {% endif %}
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

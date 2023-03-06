@@ -21,18 +21,17 @@ def register():
         if user:
             flash(f"Пользователь c именем {username} уже зарегистрирован", 'danger')
         else:
-            file = request.files["photo"]
-            if file and allowed_file(file.filename):
-                photo_name, photo_path = User.save_image(file=file, username=username, id=user.id)
-                user = User(username=username, password=generate_password_hash(password), photo_name=photo_name, photo_path=photo_path)
-                db.session.add(user)
-                db.session.commit()
-                flash('Пользователь был успешно создан') 
-                return redirect(url_for("home"))
-
             user = User(username=username, password=generate_password_hash(password))
             db.session.add(user)
             db.session.commit()
+            file = request.files["photo"]
+            if file and allowed_file(file.filename):
+                user = User.query.filter_by(username=username).first()
+                photo_name, photo_path = User.save_image(file=file, username=username, id=user.id)
+                user.photo_name = photo_name
+                user.photo_path = photo_path
+                db.session.add(user)
+                db.session.commit()
             flash('Пользователь был успешно создан') 
             return redirect(url_for("home"))
   

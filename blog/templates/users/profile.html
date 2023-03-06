@@ -36,5 +36,10 @@
             {% endfor %}
         </form>
     </div>
+    <div>
+        <form action="{{ url_for('users.delete_profile', username=user.username) }}" method="post">
+            <button>Удалить профиль</button>
+        </form>
+    </div>
 </div>
 {% endblock %}
