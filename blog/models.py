@@ -16,7 +16,7 @@ class User(UserMixin, db.Model):
     photo_name = db.Column(db.String, nullable=True)
     photo_path = db.Column(db.String, nullable=True)
     posts = db.relationship('Post', lazy='select', backref=db.backref('user', lazy='joined'), cascade="all, delete, delete-orphan")
-    comments = db.relationship('Comment', lazy='select', backref=db.backref('user', lazy='joined'))
+    comments = db.relationship('Comment', lazy='select', backref=db.backref('user', lazy='joined'), cascade="all, delete, delete-orphan")
 
     def __repr__(self):
         return f"User {self.username}"

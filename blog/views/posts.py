@@ -1,12 +1,13 @@
 import os
 from PIL import Image
+from datetime import datetime
 
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 
 from blog import db
 from blog.models import Post, Tag, User
-from blog.forms import PostForm
+from blog.forms import PostForm, CommentForm
 from blog.utils import allowed_file
 from blog.config import Config
 
@@ -56,7 +57,8 @@ def new_post():
 @posts.route("/<int:id>", methods=["GET"])
 def get_post(id):
     post = Post.query.get_or_404(id)
-    return render_template("posts/post_detail.html", post=post)
+    form = CommentForm()
+    return render_template("posts/post_detail.html", post=post, form=form)
 
 @posts.route("/update_post/<int:id>", methods=["GET", "POST"])
 @login_required
@@ -67,10 +69,15 @@ def update_post(id):
         flash("Вы не можете изменять чужую статью")
     
     form = PostForm(request.form)
+
+    name_image = None
+
     form.title.default = post.title
     form.body.default = post.body
-    path_to_image = f"{Config.UPLOAD_FOLDER}" + "\\" + f"{post.image_path}".replace("/", "\\")
-    form.photo.data = Image.open(path_to_image)
+    if post.image_path and post.image_name:
+        path_to_image = f"{Config.UPLOAD_FOLDER}" + "\\" + f"{post.image_path}".replace("/", "\\")
+        form.photo.data = Image.open(path_to_image)
+        name_image = path_to_image.split("\\")[-1]
     form.submit.label.text = "Изменить статью"
     form.process()
     form.tags.choices = [(t.id, t.title) for t in Tag.query.all()]
@@ -81,12 +88,12 @@ def update_post(id):
         tags = request.form.getlist('tags')
         post.title = title
         post.body = body
+        post.updated = datetime.utcnow()
         post.tags = []
 
         for tag in tags:
             post.tags.append(Tag.query.filter_by(id=tag).first())
 
-        name_image = path_to_image.split("\\")[-1]
         file = request.files["photo"]
 
         if file and name_image != file.filename and allowed_file(file.filename):

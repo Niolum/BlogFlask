@@ -5,7 +5,7 @@ from blog.models import Tag
 from blog.forms import TagForm
 
 
-tags = Blueprint('tags', __name__, url_prefix='/tags')
+tags = Blueprint("tags", __name__, url_prefix="/tags")
 
 
 @tags.route("/", methods=["GET"])
@@ -21,12 +21,12 @@ def new_tag():
 
         tag = Tag.query.filter_by(title=title).first()
         if tag:
-            flash(f"Тег c именем {title} уже существует", 'danger')
+            flash(f"Тег c именем {title} уже существует", "danger")
         else:
             tag = Tag(title=title)
             db.session.add(tag)
             db.session.commit()
-            flash('Тег был успешно создан') 
+            flash("Тег был успешно создан") 
             return redirect(url_for("home"))
     
     return render_template("tags/new_tag.html", form=form)
