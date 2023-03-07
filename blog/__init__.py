@@ -44,5 +44,8 @@ def create_app():
 
     from blog.views import posts
     app.register_blueprint(posts)
+
+    from blog.views import comments
+    app.register_blueprint(comments)
     
     return app

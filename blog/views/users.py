@@ -33,8 +33,9 @@ def profile(username):
     
     user = User.query.filter_by(username=username).first_or_404()
     form.username.default = user.username
-    path_to_image = f"{Config.UPLOAD_FOLDER}" + "\\" + f"{user.photo_path}".replace("/", "\\")
-    form.photo.data = Image.open(path_to_image)
+    if user.photo_path and user.photo_name:
+        path_to_image = f"{Config.UPLOAD_FOLDER}" + "\\" + f"{user.photo_path}".replace("/", "\\")
+        form.photo.data = Image.open(path_to_image)
     form.process()
     if request.method == 'POST':
         username = request.form['username']

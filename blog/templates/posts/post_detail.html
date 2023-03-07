@@ -3,6 +3,13 @@
 
 {% block content %}
 <div class="content">
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+        <div class="alert alert-{{category}}" onclick="close">
+            <span>Error: {{ message }}</span>
+            <button class="closebtn" onclick='$("#content").hide();'>&#10006;</button> 
+            <label for="pop-checkbox" class="close-block"></label> 
+        </div>
+    {% endfor %}
     <div class="post-detail">
         <h1>{{ post.title }}</h1>
         <a href="{{ url_for('users.user', username=post.user.username) }}"><p>Автор: {{ post.user.username }}</p></a>
@@ -23,6 +30,44 @@
             </form>
             
         {% endif %}
+    </div>
+    <div class="comments">
+        <h1>Комментарии</h1>
+        {% for comment in post.comments %}
+            <div>
+                <span>{{ comment.message }}</span><br>
+                <p>{{ comment.user.username }}</p>
+                <p>{{ comment.created }}</p>
+                {% if current_user.id == comment.owner_id %}
+                    <form action="{{ url_for('comments.delete_comment', comment_id=comment.id) }}" method="post">
+                        <button>Удалить комментарий</button>
+                    </form>
+                    
+                {% endif %}
+            </div>
+        {% endfor %}
+        
+    </div>
+    <div class="new-comment">
+        
+
+        <form action="{{ url_for('comments.create_comment', post_id=post.id) }}" method="post" enctype="multipart/form-data">
+            {{ form.csrf_token() }}
+
+            {% for field in form if field.name != "csrf_token" %}
+            {% if field.name != "submit" %}
+            <p>{{ field.label() }}</p>
+            {% endif %}
+            <p>{{ field }}
+                {% for error in field.errors %}
+                {{ erorr }}
+                {% endfor %}
+            </p>
+            {% endfor %}
+        </form>
+
+        </div>
+
     </div>
 </div>
 {% endblock %}
