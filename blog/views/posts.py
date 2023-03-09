@@ -131,3 +131,8 @@ def get_posts_by_username(username):
     user = User.query.filter_by(username=username).first()
     posts = Post.query.filter_by(author_id=user.id).all()
     return render_template("posts/post_list.html", posts=posts)
+
+@posts.route("/tag/<title>", methods=["GET"])
+def get_posts_by_tag(title):
+    posts = Post.query.join(Post.tags).filter(Tag.title==title).order_by(Post.created.desc()).all()
+    return render_template("posts/post_list.html", posts=posts)

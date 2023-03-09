@@ -8,10 +8,10 @@ from blog.forms import CommentForm
 
 comments = Blueprint("comments", __name__, url_prefix="/comments")
 
-@comments.route("/<int:post_id>", methods=["GET"])
-def get_comments(post_id):
-    comments = Comment.query.filter_by(post_id=post_id).all()
-    return render_template("posts/post_detail.html", comments=comments)
+# @comments.route("/<int:post_id>", methods=["GET"])
+# def get_comments(post_id):
+#     comments = Comment.query.filter_by(post_id=post_id).all()
+#     return render_template("posts/post_detail.html", comments=comments)
 
 @comments.route("/create_comment/<int:post_id>", methods=["GET", "POST"])
 @login_required

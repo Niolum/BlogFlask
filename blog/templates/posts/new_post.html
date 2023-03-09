@@ -30,5 +30,8 @@
       </p>
     {% endfor %}
   </form>
+
+  {{ ckeditor.load() }}
+  {{ ckeditor.config(name="body") }}
 </div>
 {% endblock content %}

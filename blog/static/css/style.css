@@ -14,24 +14,283 @@ html, body {
     font-family:"Open Sans", Verdana, Tahoma, Arial, Helvetica, sans-serif;
   }
 
-.wrapper {
-    position: relative;
-    height: 100%;
+body {
+    display: flex !important;
+    flex-direction: column;
+}
+
+h1 {
+    margin-top: 20px;
+    text-align: center
 }
 
 .content {
+    flex: 1 0 auto;
     box-sizing: border-box;
     min-height: 90%;
     padding-bottom: 90px;
+    margin: auto;
+    width: 75%;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* post-list */
+
+.post-list {
+    margin-top: 35px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-column-gap: 10em;
+    grid-row-gap: 2em;
+}
+
+.post-card {
+    padding: auto;
+    margin: auto;
+}
+
+.rounded-bottom {
+    border-bottom-right-radius: 1.5rem !important;
+    border-bottom-left-radius: 1.5rem !important;
+    border-top-right-radius: 1.5rem !important;
+    border-top-left-radius: 1.5rem !important;
+}
+
+.rounded-top {
+    border-top-right-radius: 1.5rem !important;
+    border-top-left-radius: 1.5rem !important;
+}
+
+.card {
+    border-radius: 1 !important;
+}
+
+.card-img {
+    display: inline-block; 
+    overflow: hidden;
+    height: 200px;
+   }
+
+.card-img img {
+    transition: 1s; 
+    display: block; 
+   }
+
+.card-img img:hover {
+transform: scale(1.1); 
+}
+
+.card-post-info {
+    display: flex;
+    justify-content: space-between;
+    height: 40px;
+}
+
+.card-post-dop-info {
+    padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-info-title {
+    height: 100px;
+}
+
+.card-title {
+	position: relative;
+	color: #000000;
+	font-size: 1.25rem;
+	text-decoration: none;
+    transition: 0.5s linear;
+}
+
+.card-title::before {
+    content: '';
+	position: absolute;
+	left: 0; bottom: -5px;
+	width: 0;
+	height: 1.5px;
+	background-color: rgb(63, 120, 185);
+}
+
+.card-title:hover {
+    color: rgb(63, 120, 185);
+
+}
+
+.card-title:hover:before {
+	width: 100%;
+
+}
+
+.card-title::before {
+	transition: width 0.35s;
+}
+
+.card-author-link {
+	position: relative;
+	color: #000000;
+	text-decoration: none;
+    transition: 0.5s linear;
+}
+
+.card-author-link::before {
+    content: '';
+	position: absolute;
+	left: 0; bottom: -5px;
+	width: 0;
+	height: 1.5px;
+	background-color: rgb(63, 120, 185);
+}
+
+.card-author-link:hover {
+    color: rgb(63, 120, 185);
+
+}
+
+.card-author-link:hover:before {
+	width: 100%;
+
+}
+
+.card-author-link::before {
+	transition: width 0.35s;
 }
 
 
+/* post-detail */
 
+.post-detail {
+    padding-top: 20px;
+    margin: auto;
+    width: 75%;
+}
+
+.post-title {
+    padding-bottom: 20px;
+    font-weight: 600;
+}
+
+.post-detail-author {
+    font-style: italic;
+    padding-bottom: 3px;
+    margin-bottom: 0;
+}
+
+.post-author-link {
+	position: relative;
+	color: #000000;
+	text-decoration: none;
+    transition: 0.5s linear;
+}
+
+.post-author-link::before {
+    content: '';
+	position: absolute;
+	left: 0; bottom: -5px;
+	width: 0;
+	height: 1.5px;
+	background-color: rgb(63, 120, 185);
+}
+
+.post-author-link:hover {
+    color: rgb(63, 120, 185);
+}
+
+.post-author-link:hover:before {
+	width: 100%;
+}
+
+.post-author-link::before {
+	transition: width 0.35s;
+}
+
+.post-detail-info {
+    display: flex;
+    gap: 15px;
+}
+
+.post-tags {
+    display: flex;
+    gap: 15px;
+}
+
+.post-tag {
+    margin: 5px 0 15px 0;
+    border: 8px solid transparent;
+    box-shadow: 0 0 8px rgb(0, 0, 0);
+    background-color: rgba(134, 95, 197, 0.795);
+}
+
+.post-tag a {
+    font-style: italic;
+    color: #000000;
+    transition: 0.5s linear;
+}
+
+.post-tag a:hover {
+    color: rgb(1, 60, 253);
+}
+
+.post-detail-img img {
+    display: block;
+    margin: auto;
+    padding: auto;
+    width: 800px;
+}
+
+.post-links button {
+    display: block;
+    box-shadow: 0 0 8px rgb(0, 0, 0);
+}
+
+.post-link-btn {
+    margin: auto;
+    padding: auto;
+}
+
+.post-buttons {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-outline-danger:hover {
+    background-color: rgb(201, 46, 46);
+}
+
+/* comments */
+
+.comments-head {
+    padding-bottom: 20px;
+    font-weight: 600;
+}
+
+.comments {
+    padding-top: 20px;
+    margin: auto;
+    width: 75%;
+}
+
+.comments-author-info {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.comments-author-icon {
+    grid-column-start: 1;
+    grid-row-start: 1;
+    grid-row-end: 3;
+}
 
 /* footer */
 
 
 .footer {
+    flex: 0 0 auto;
     height: 80px;
     margin-top: -80px;
 }
