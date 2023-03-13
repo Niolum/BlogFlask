@@ -3,22 +3,26 @@
 
 {% block content %}
 <div class="content">
-  {% for user in users %}
-    <article class="post">
-      <header>
-        <div>
-          <a class="user" href="{{ url_for('users.user', username=user['username']) }}"><h1>{{ user['username'] }}</h1></a>
-          {% if user.photo_path %}
-            <div>
-              <a href="{{ url_for('static', filename='media/' + user.photo_path) }}">
+  <div class="user-list-content">
+    <div class="user-list">
+      <h1>Пользователи</h1>
+      <div class="users">
+        {% for user in users %}
+          <a href="{{ url_for('users.user', username=user.username) }}" class="user">
+            {% if user.photo_path %}
+            <picture class="user-icon">
                 <img src="{{ url_for('static', filename='media/' + user.photo_path) }}">
-              </a>
-            </div>
-          {% endif %}
-        </div>
-      </header>
-    </article>
-
-  {% endfor %}
+            </picture>
+            {% else %}
+            <picture class="user-icon">
+                <img src="{{ url_for('static', filename='images/icon.webp') }}">
+            </picture>
+            {% endif %}
+            <div class="user-name">{{ user.username }}</div>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

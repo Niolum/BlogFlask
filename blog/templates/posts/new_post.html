@@ -2,36 +2,76 @@
 
 {% block content %}
 <div class="content">
+  <div class="new-post-content">
+    <div class="new-post">
+
+      <h1>{{ title_page }}</h1>
+
+      {% for category, message in get_flashed_messages(with_categories=True) %}
+      <div class="alert alert-{{category}}" onclick="close">
+        <span>Error: {{ message }}</span>
+        <button class="closebtn" onclick='$("#content").hide();'>&#10006;</button> 
+        <label for="pop-checkbox" class="close-block"></label> 
+      </div>
+      {% endfor %}
 
 
-  <h1>{{ title_page }}</h1>
 
-  {% for category, message in get_flashed_messages(with_categories=True) %}
-  <div class="alert alert-{{category}}" onclick="close">
-    <span>Error: {{ message }}</span>
-    <button class="closebtn" onclick='$("#content").hide();'>&#10006;</button> 
-    <label for="pop-checkbox" class="close-block"></label> 
+      <form action="" method="post" enctype="multipart/form-data" class="was-validated">
+        <div class="new-post-form">
+          {{ form.csrf_token() }}
+
+          {{ form.title.label(hidden=True) }}
+          {{ form.title(class_="form-control form-control-lg", placeholder="Введите название") }}
+          {% for error in form.title.errors %}
+            {{ erorr }}
+          {% endfor %}
+          {{ form.body.label(hidden=True) }}
+          {{ form.body }}
+          {% for error in form.body.errors %}
+            {{ erorr }}
+          {% endfor %}
+          <div class="input-group mt-4 mb-3">
+            {{ form.photo.label(class_="input-group-text", hidden=True) }}
+            {{ form.photo(class_="form-control") }}
+            {% for error in form.photo.errors %}
+              {{ erorr }}
+            {% endfor %}
+          </div>
+          <div class="input-group mb-3">
+            {{ form.tags.label(hidden=True) }}
+            {{ form.tags(class_="form-select", data_placeholder="Выберите теги для статьи") }}
+            {% for error in form.tags.errors %}
+              {{ erorr }}
+            {% endfor %}
+          </div>
+          {{ form.submit(class_="btn btn-outline-dark") }}
+
+          <!-- {% for field in form if field.name != "csrf_token" %}
+            {% if field.name != "submit" %}
+            <p>{{ field.label() }}</p>
+            {% endif %}
+            <p>{{ field }}
+              {% for error in field.errors %}
+                {{ erorr }}
+              {% endfor %}
+            </p>
+          {% endfor %} -->
+        </div>
+      </form>
+
+      {{ ckeditor.load() }}
+      {{ ckeditor.config(name="body") }}
+    </div>
   </div>
-  {% endfor %}
-
-
-
-  <form action="" method="post" enctype="multipart/form-data">
-    {{ form.csrf_token() }}
-
-    {% for field in form if field.name != "csrf_token" %}
-      {% if field.name != "submit" %}
-      <p>{{ field.label() }}</p>
-      {% endif %}
-      <p>{{ field }}
-        {% for error in field.errors %}
-          {{ erorr }}
-        {% endfor %}
-      </p>
-    {% endfor %}
-  </form>
-
-  {{ ckeditor.load() }}
-  {{ ckeditor.config(name="body") }}
 </div>
+
+<script>
+  $( '#tags' ).select2( {
+    theme: "bootstrap-5",
+    width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+    placeholder: $( this ).data( 'placeholder' ),
+    closeOnSelect: false,
+  } );
+</script>
 {% endblock content %}

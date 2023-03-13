@@ -2,33 +2,38 @@
 
 {% block content %}
 <div class="content">
+  <div class="new-tag-content">
+    <div class="new-tag">
 
 
-  <h1>Создание тега</h1>
+      <h1>Создание тега</h1>
 
-  {% for category, message in get_flashed_messages(with_categories=True) %}
-  <div class="alert alert-{{category}}" onclick="close">
-    <span>Error: {{ message }}</span>
-    <button class="closebtn" onclick='$("#content").hide();'>&#10006;</button> 
-    <label for="pop-checkbox" class="close-block"></label> 
+      {% for category, message in get_flashed_messages(with_categories=True) %}
+      <div class="alert alert-{{category}}" onclick="close">
+        <span>Error: {{ message }}</span>
+        <button class="closebtn" onclick='$("#content").hide();'>&#10006;</button> 
+        <label for="pop-checkbox" class="close-block"></label> 
+      </div>
+      {% endfor %}
+
+
+
+      <form action="" method="post" enctype="multipart/form-data">
+        <div class="new-tag-form">
+          {{ form.csrf_token() }}
+
+          {{ form.title.label }}
+          {{ form.title(class_='form-control') }}
+          {% for error in form.title.errors %}
+            {{ erorr }}
+          {% endfor %}
+          <div class="btn-tag">
+            {{ form.submit(class_="btn btn-outline-dark") }}
+          </div>
+
+        </div>
+      </form>
+    </div>
   </div>
-  {% endfor %}
-
-
-
-  <form action="" method="post" enctype="multipart/form-data">
-    {{ form.csrf_token() }}
-
-    {% for field in form if field.name != "csrf_token" %}
-      {% if field.name != "submit" %}
-      <p>{{ field.label() }}</p>
-      {% endif %}
-      <p>{{ field }}
-        {% for error in field.errors %}
-          {{ erorr }}
-        {% endfor %}
-      </p>
-    {% endfor %}
-  </form>
 </div>
 {% endblock content %}

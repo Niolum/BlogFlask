@@ -29,7 +29,7 @@ def create_comment(post_id):
     
     return render_template("posts/post_detail.html", form=form)
 
-@comments.route("/delte_comment/<int:comment_id>", methods=["POST"])
+@comments.route("/delete_comment/<int:comment_id>", methods=["POST"])
 @login_required
 def delete_comment(comment_id):
     comment = Comment.query.get_or_404(comment_id)
