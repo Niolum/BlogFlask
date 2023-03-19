@@ -3,18 +3,74 @@
 
 {% block content %}
 <div class="content">
-    <header>
-        <div>
-            <h1>{{ user['username'] }}</h1>
-            {% if user.photo_path %}
-                <div>
-                    <a href="{{ url_for('static', filename='media/' + user.photo_path) }}">
+    <div class="user-detail-content">
+        <div class="user-header">
+            <div class="user-head-flex">
+                <div class="user-head">
+                    {% if user.photo_path %}
+                    <picture class="user-head-icon">
                         <img src="{{ url_for('static', filename='media/' + user.photo_path) }}">
-                    </a>
+                    </picture>
+                    {% else %}
+                    <picture class="user-head-icon">
+                        <img src="{{ url_for('static', filename='images/icon.webp') }}">
+                    </picture>
+                    {% endif %}
+                    <div class="user-head-name">
+                        <h1>{{ user.username }}</h1>
+                        <div class="user-head-blog">
+                            <picture class="user-head-blog-icon">
+                                <img src="{{ url_for('static', filename='images/blog.png') }}">
+                            </picture>
+                            <span>{{ user.posts|length }}</span>
+                        </div>
+                    </div>
                 </div>
-            {% endif %}
+            </div>
         </div>
-    </header>
-
+        <div class="user-detail">
+          <div class="user-post-list fluid">
+              {% for post in user.posts %}
+                <div class="card post-card rounded-bottom fluid" style="width: 18em;">
+                  <div class="card-img rounded-top">
+                    <a href="{{ url_for('posts.get_post', id=post.id) }}">
+                      <img src="{{ url_for('static', filename='media/' + post.image_path) }}" class="card-img-top" alt="{{ post.image_name}}">
+                    </a>
+                  </div>
+                  <div class="card-body">
+                    <div class="card-post-info">
+                      <p class="card-tag">
+                        {% if post.tags|length > 1%}
+                          <span>
+                            <a href="{{ url_for('posts.get_posts_by_tag', title=post.tags[0].title) }}" class="card-author-link">{{ post.tags[0].title }}</a>, 
+                            <a href="{{ url_for('posts.get_posts_by_tag', title=post.tags[1].title) }}" class="card-author-link">{{ post.tags[1].title }}</a>
+                          </span>
+                        {% else %}
+                          <span>
+                            <a href="{{ url_for('posts.get_posts_by_tag', title=post.tags[0].title) }}" class="card-author-link">{{ post.tags[0].title }}</a></span>
+                        {% endif %}
+                      </p>
+                      <p class="card-author"><a href="{{ url_for('users.user', username=post.user.username) }}" class="card-author-link">{{ post.user.username }}</a></p>
+                    </div>
+                    <div class="card-info-title">
+                      <a href="{{ url_for('posts.get_post', id=post.id) }}" class="card-title">{{ post.title }}</a>
+                    </div>
+                    <div class="card-post-dop-info">
+                      <p class="card-date">
+                        <span>{{ post.created.strftime('%Y-%m-%d') }}</span>
+                        <span>{{ post.created.strftime('%H:%M') }}</span>
+                      </p>
+                      <p class="card-comment">
+                        <span>
+                        <img src="{{ url_for('static', filename='images/comment.png') }}" width="25" height="25">{{ post.comments|length }}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+          </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

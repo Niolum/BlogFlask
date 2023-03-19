@@ -2,33 +2,56 @@
 
 {% block content %}
 <div class="content">
+  <div class="login-content">
+    <div class="login">
 
+      <h1>Регистрация пользователя</h1>
 
-  <h1>Регистрация пользователя</h1>
-
-  {% for category, message in get_flashed_messages(with_categories=True) %}
-  <div class="alert alert-{{category}}" onclick="close">
-    <span>Error: {{ message }}</span>
-    <button class class="closebtn" onclick='$("#content").hide();'>&#10006;</button> 
-    <label for="pop-checkbox" class="close-block"></label> 
-  </div>
-  {% endfor %}
-
-
-
-  <form action="" method="post" enctype="multipart/form-data">
-    {{ form.csrf_token() }}
-
-    {% for field in form if field.name != "csrf_token" %}
-      {% if field.name != "submit" %}
-      <p>{{ field.label() }}</p>
+      {% for category, message in get_flashed_messages(with_categories=True) %}
+      {% if category == "success" %}
+      <div id="alert" class="alert alert-{{category}}">
+        <span>{{ message }}</span>
+      {% else %}
+      <div id="alert" class="alert alert-{{category}}">
+        <span>Ошибка: {{ message }}</span>
       {% endif %}
-      <p>{{ field }}
-        {% for error in field.errors %}
-          {{ erorr }}
+        <button id="close-btn" class="close-btn btn btn-dark"">&#10007;</button>
+        <label for="pop-checkbox" class="close-block"></label>
+      </div>
+      {% endfor %}
+
+
+
+      <form action="" method="post" enctype="multipart/form-data">
+        {{ form.csrf_token() }}
+
+        {{ form.username.label(hidden=True)}}
+        {{ form.username(class_="form-control", placeholder="Введите логин") }}
+        {% for error in form.username.errors %}
+            {{ erorr }}
         {% endfor %}
-      </p>
-    {% endfor %}
-  </form>
+        {{ form.password.label(hidden=True) }}
+        {{ form.password(class_="form-control", placeholder="Введите пароль") }}
+        {% for error in form.password.errors %}
+            {{ erorr }}
+        {% endfor %}
+        {{ form.confirm.label(hidden=True) }}
+        {{ form.confirm(class_="form-control", placeholder="Введите пароль еще раз") }}
+        {% for error in form.confirm.errors %}
+            {{ erorr }}
+        {% endfor %}
+        <div class="input-group mt-4 mb-3">
+          {{ form.photo.label(class_="input-group-text", hidden=True) }}
+          {{ form.photo(class_="form-control") }}
+          {% for error in form.photo.errors %}
+            {{ erorr }}
+          {% endfor %}
+        </div>
+        <div class="btn-submit" align="center">
+          {{ form.submit(class_="btn btn-outline-dark") }}
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 {% endblock content %}

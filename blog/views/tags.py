@@ -21,12 +21,12 @@ def new_tag():
 
         tag = Tag.query.filter_by(title=title).first()
         if tag:
-            flash(f"Тег c именем {title} уже существует", "danger")
+            flash(f"Тег c именем {title} уже существует", "error")
         else:
             tag = Tag(title=title)
             db.session.add(tag)
             db.session.commit()
-            flash("Тег был успешно создан") 
+            flash("Тег был успешно создан", "success") 
             return redirect(url_for("home"))
     
     return render_template("tags/new_tag.html", form=form)

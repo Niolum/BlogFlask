@@ -3,10 +3,17 @@
 
 {% block content %}
 <div class="content">
-  {% for tag in tags %}
-    <div class="tag">
-        <a href="#">{{ tag['title'] }}</a>
+  <div class="tag-list">
+    <div class="tags">
+      <h1>Все теги</h1>
+      <div class="all-tags">
+        {% for tag in tags %}
+          <div class="tag">
+              <a href="{{ url_for('posts.get_posts_by_tag', title=tag.title) }}">{{ tag.title }}</a>
+          </div>
+        {% endfor %}
+      </div>
     </div>
-  {% endfor %}
+  </div>
 </div>
 {% endblock %}

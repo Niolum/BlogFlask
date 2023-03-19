@@ -38,24 +38,28 @@ def profile(username):
         form.photo.data = Image.open(path_to_image)
     form.process()
     if request.method == 'POST':
-        username = request.form['username']
+        username_new = request.form['username']
+        if username != username_new:
+            if User.query.filter_by(username=username_new).first():
+                flash(f"Пользователь c именем '{username_new}' уже зарегистрирован", "error")
+                return redirect(url_for('users.profile', username=username))
         file = request.files["photo"]
         if file and allowed_file(file.filename):
             User.delete_image(user)
             photo_name, photo_path = User.save_image(file=file, username=username, id=user.id)
-            user.username = username
+            user.username = username_new
             user.photo_name = photo_name
             user.photo_path = photo_path
             db.session.add(user)
             db.session.commit()
-            flash("Данные пользователя были изменены")
-            return redirect(url_for('users.profile', username=username))
+            flash("Данные пользователя были изменены", "success")
+            return redirect(url_for('users.profile', username=username_new))
 
-        user.username = username
+        user.username = username_new
         db.session.add(user)
         db.session.commit()
-        flash("Имя пользователя было изменено")
-        return redirect(url_for('users.profile', username=username))
+        flash("Имя пользователя было изменено", "success")
+        return redirect(url_for('users.profile', username=username_new))
     else:
         return render_template('users/profile.html', user=user, form=form)
     
@@ -64,7 +68,7 @@ def profile(username):
 def delete_profile(username):
     user = User.query.filter_by(username=username).first()
     if not user:
-        flash("Данного юзера не существует", "danger")
+        flash("Данного юзера не существует", "error")
 
     if user.photo_path and user.photo_name:
         User.delete_image(user)

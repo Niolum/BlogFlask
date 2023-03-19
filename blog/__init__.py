@@ -1,14 +1,17 @@
-from flask import Flask
+from flask import Flask, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask import render_template
 from flask_login import LoginManager
+from flask_ckeditor import CKEditor
+from flask_moment import Moment
 
 from .config import Config
 
 
 db = SQLAlchemy()
 migrate = Migrate()
+ckeditor = CKEditor()
+moment = Moment()
 
 def create_app():
     app = Flask(__name__)
@@ -23,6 +26,9 @@ def create_app():
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
 
+    ckeditor.init_app(app)
+    moment.init_app(app)
+
     from .models import User
 
     @login_manager.user_loader
@@ -31,7 +37,7 @@ def create_app():
 
     @app.route("/")
     def home():
-        return render_template('index.html', title='Главная страница')
+        return redirect(url_for("posts.all_posts"))
 
     from blog.views import auth
     app.register_blueprint(auth)

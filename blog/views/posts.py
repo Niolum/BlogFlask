@@ -33,7 +33,7 @@ def new_post():
 
         post = Post.query.filter_by(title=title).first()
         if post:
-            flash(f"Статья c таким названием уже существует", "danger")
+            flash(f"Статья c таким названием уже существует", "error")
         else:
             user_id = current_user.id
             post = Post(title=title, body=body, author_id=user_id)
@@ -49,7 +49,7 @@ def new_post():
                 post.image_path = image_path
                 db.session.add(post)
                 db.session.commit()
-            flash("Статья была успешно создана") 
+            flash("Статья была успешно создана", "success") 
             return redirect(url_for("home"))
   
     return render_template("posts/new_post.html", form=form, title_page=title_page)
@@ -105,7 +105,7 @@ def update_post(id):
         db.session.add(post)
         db.session.commit()
 
-        flash("Статья была успешно изменена") 
+        flash("Статья была успешно изменена", "success") 
         return redirect(url_for("posts.get_post", id=post.id))
     
     return render_template("posts/new_post.html", form=form, title_page=title_page)
@@ -130,4 +130,9 @@ def delete_post(id):
 def get_posts_by_username(username):
     user = User.query.filter_by(username=username).first()
     posts = Post.query.filter_by(author_id=user.id).all()
+    return render_template("posts/post_list.html", posts=posts)
+
+@posts.route("/tag/<title>", methods=["GET"])
+def get_posts_by_tag(title):
+    posts = Post.query.join(Post.tags).filter(Tag.title==title).order_by(Post.created.desc()).all()
     return render_template("posts/post_list.html", posts=posts)
