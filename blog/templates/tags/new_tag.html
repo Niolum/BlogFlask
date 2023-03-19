@@ -9,10 +9,10 @@
       <h1>Создание тега</h1>
 
       {% for category, message in get_flashed_messages(with_categories=True) %}
-      <div class="alert alert-{{category}}" onclick="close">
-        <span>Error: {{ message }}</span>
-        <button class="closebtn" onclick='$("#content").hide();'>&#10006;</button> 
-        <label for="pop-checkbox" class="close-block"></label> 
+      <div id="alert" class="alert alert-{{category}}">
+        <span>Ошибка: {{ message }}</span>
+        <button id="close-btn" class="close-btn btn btn-dark"">&#10007;</button>
+        <label for="pop-checkbox" class="close-block"></label>
       </div>
       {% endfor %}
 

@@ -4,14 +4,19 @@
 {% block content %}
 <div class="content">
     <div class="post-detail-content">
-        {% for category, message in get_flashed_messages(with_categories=True) %}
-            <div class="alert alert-{{category}}" onclick="close">
-                <span>Error: {{ message }}</span>
-                <button class="closebtn" onclick='$("#content").hide();'>&#10006;</button> 
-                <label for="pop-checkbox" class="close-block"></label> 
-            </div>
-        {% endfor %}
         <div class="post-detail">
+            {% for category, message in get_flashed_messages(with_categories=True) %}
+            {% if category == "success" %}
+            <div id="alert" class="alert alert-{{category}}">
+                <span>{{ message }}</span>
+            {% else %}
+            <div id="alert" class="alert alert-{{category}}">
+                <span>Ошибка: {{ message }}</span>
+            {% endif %}
+                <button id="close-btn" class="close-btn btn btn-dark"">&#10007;</button>
+                <label for="pop-checkbox" class="close-block"></label>
+            </div>
+            {% endfor %}
             <h1 class="post-title">{{ post.title }}</h1>
             <span>
                 <p class="post-detail-author"><a href="{{ url_for('users.user', username=post.user.username) }}" class="post-author-link">Автор: {{ post.user.username }}</a></p>
@@ -44,10 +49,10 @@
                 <div class="post-buttons">
                     {% if current_user.id == post.user.id %}
                         <form action="{{ url_for('posts.update_post', id=post.id) }}">
-                            <button type="button" class="btn btn-outline-dark">Изменить статью</button>
+                            <input type="submit" class="btn btn-outline-dark" value="Изменить статью">
                         </form>
                         <form action="{{ url_for('posts.delete_post', id=post.id) }}" method="post">
-                            <button type="button" class="btn btn-outline-danger">Удалить статью</button>
+                            <button type="submit" class="btn btn-outline-danger">Удалить статью</button>
                         </form>
                     {% endif %}
                 </div>

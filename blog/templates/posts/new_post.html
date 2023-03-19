@@ -8,10 +8,15 @@
       <h1>{{ title_page }}</h1>
 
       {% for category, message in get_flashed_messages(with_categories=True) %}
-      <div class="alert alert-{{category}}" onclick="close">
-        <span>Error: {{ message }}</span>
-        <button class="closebtn" onclick='$("#content").hide();'>&#10006;</button> 
-        <label for="pop-checkbox" class="close-block"></label> 
+      {% if category == "success" %}
+      <div id="alert" class="alert alert-{{category}}">
+        <span>{{ message }}</span>
+      {% else %}
+      <div id="alert" class="alert alert-{{category}}">
+        <span>Ошибка: {{ message }}</span>
+      {% endif %}
+        <button id="close-btn" class="close-btn btn btn-dark"">&#10007;</button>
+        <label for="pop-checkbox" class="close-block"></label>
       </div>
       {% endfor %}
 
@@ -47,16 +52,6 @@
           </div>
           {{ form.submit(class_="btn btn-outline-dark") }}
 
-          <!-- {% for field in form if field.name != "csrf_token" %}
-            {% if field.name != "submit" %}
-            <p>{{ field.label() }}</p>
-            {% endif %}
-            <p>{{ field }}
-              {% for error in field.errors %}
-                {{ erorr }}
-              {% endfor %}
-            </p>
-          {% endfor %} -->
         </div>
       </form>
 

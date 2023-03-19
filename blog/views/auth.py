@@ -19,7 +19,7 @@ def register():
 
         user = User.query.filter_by(username=username).first()
         if user:
-            flash(f"Пользователь c именем {username} уже зарегистрирован", 'danger')
+            flash(f"Пользователь c именем '{username}' уже зарегистрирован", "error")
         else:
             user = User(username=username, password=generate_password_hash(password))
             db.session.add(user)
@@ -32,7 +32,7 @@ def register():
                 user.photo_path = photo_path
                 db.session.add(user)
                 db.session.commit()
-            flash('Пользователь был успешно создан') 
+            flash("Пользователь был успешно создан", "success") 
             return redirect(url_for("home"))
   
     return render_template('auth/register.html', form=form)
@@ -46,10 +46,14 @@ def login():
         password = request.form['password']
 
         user = User.query.filter_by(username=username).first()
-        if not User or not check_password_hash(user.password, password):
-            flash('Пожалуйста, проверьте данные для входа и повторите попытку', 'danger')
+        if not user:
+            flash("Неверный логин", "error")
             return redirect(url_for('auth.login'))
 
+        if not check_password_hash(user.password, password):
+            flash("Неверный пароль", "error")
+            return redirect(url_for('auth.login'))
+        
         login_user(user)
         return redirect('/')
 
