@@ -1,0 +1,103 @@
+name: Continuos Integration and Delivery
+
+on:
+  push:
+    branches:
+      - 'main'
+
+env:
+  WEB_IMAGE: ghcr.io/$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')/web
+
+jobs:
+
+  build:
+    name: Build Docker Images
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v1
+      - name: Add and set environment variables to .env
+        env:
+          DBUSER: ${{ secrets.DBUSER }}
+          DBPASS: ${{ secrets.DBPASS }}
+          DBNAME: ${{ secrets.DBNAME }}
+          DBHOST: ${{ secrets.DBHOST }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRS_DB }}
+        run: |
+          echo "WEB_IMAGE=$(echo ${{ env.WEB_IMAGE }})" >> $GITHUB_ENV
+      - name: Log in to Github Packages
+        run: echo ${ REGISTRY_TOKEN} | docker login ghcr.io -u ${{ secrets.NAMESPACE }} --password-stdin
+        env:
+          REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
+      - name: Pull Images
+        run: |
+          docker pull ${{ env.WEB_IMAGE }} || true
+      - name: Build Images
+        run: |
+          docker-compose -f docker-compose.yml build
+      - name: Push Images
+        run: |
+          docker push ${{ env.WEB_IMAGE }}
+
+  deploy:
+    name: Deploy to VPS
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v1
+      - name: Add and set environment variables to .env
+        run: |
+          echo "WEB_IMAGE=%{{ env.WEB_IMAGE }}" >> .env
+        env:
+          DBUSER: ${{ secrets.DBUSER }}
+          DBPASS: ${{ secrets.DBPASS }}
+          DBNAME: ${{ secrets.DBNAME }}
+          DBHOST: ${{ secrets.DBHOST }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRS_DB }}
+      - name: Copy repo
+        uses: appleboy/scp-action@master
+        env:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: ${{ secrets.PORT }}
+          KEY: ${{ secrets.KEY }}
+        with:
+          source: "."
+          target: "/var/flaskblog"
+      - name: Executing remote command
+        uses: appleboy/ssh-action@master
+        env:
+          DBUSER: ${{ secrets.DBUSER }}
+          DBPASS: ${{ secrets.DBPASS }}
+          DBNAME: ${{ secrets.DBNAME }}
+          DBHOST: ${{ secrets.DBHOST }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRS_DB }}
+        with:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: ${{ secrets.PORT }}
+          KEY: ${{ secrets.KEY }}
+          script: |
+            cd /var/flaskblog
+            echo 'DBUSER=${{ secrets.DBUSER }}' > .env
+            echo 'DBPASS=${{ secrets.DBPASS }}' >> .env
+            echo 'DBNAME=${{ secrets.DBNAME }}' >> .env
+            echo 'DBHOST=${{ secrets.DBHOST }}' >> .env
+            echo 'SECRET_KEY=${{ secrets.SECRET_KEY }}' >> .env
+            echo 'POSTGRES_USER=${{ secrets.POSTGRES_USER }}' >> .env
+            echo 'POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}' >> .env
+            echo 'POSTGRES_DB=${{ secrets.POSTGRS_DB }}' >> .env
+            source .env
+            docker login ghcr.io -u ${{ secrets.NAMESPACE }} -p ${{ secrets.REGISTRY_TOKEN }}
+            docker pull $WEB_IMAGE
+            sudo docker compose -f docker-compose.yml up -d
