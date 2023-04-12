@@ -37,6 +37,8 @@ jobs:
           docker pull ${{ env.WEB_IMAGE }} || true
       - name: Build Images
         run: |
+          ls
+          cat .env
           docker-compose -f docker-compose.yml build
       - name: Push Images
         run: |
