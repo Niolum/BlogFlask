@@ -4,8 +4,9 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_ckeditor import CKEditor
 from flask_moment import Moment
+from whitenoise import WhiteNoise
 
-from .config import Config
+from .config import Config, ProductionConfig
 
 
 db = SQLAlchemy()
@@ -15,7 +16,7 @@ moment = Moment()
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(Config)
+    app.config.from_object(ProductionConfig)
 
     with app.app_context():
         db.init_app(app)
@@ -53,5 +54,7 @@ def create_app():
 
     from blog.views import comments
     app.register_blueprint(comments)
+
+    app.wsgi_app = WhiteNoise(app.wsgi_app, root="blog/static")
     
     return app

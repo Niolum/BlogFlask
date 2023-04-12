@@ -23,17 +23,17 @@ class User(UserMixin, db.Model):
     
     @staticmethod
     def save_image(file, username, id):
-        if not os.path.exists(f"{Config.UPLOAD_FOLDER}\\users\\{id}\\{username}"):
-            os.makedirs(f"{Config.UPLOAD_FOLDER}\\users\\{id}\\{username}")
-
-        file.save(os.path.join(f"{Config.UPLOAD_FOLDER}\\users\\{id}\\{username}", file.filename))
+        if not os.path.exists(f"{Config.UPLOAD_FOLDER}/users/{id}/{username}"):
+            os.makedirs(f"{Config.UPLOAD_FOLDER}/users/{id}/{username}")
+        
+        file.save(os.path.join(f"{Config.UPLOAD_FOLDER}/users/{id}/{username}", file.filename))
         image_name = file.filename
         image_path = f"users/{id}/{username}/{file.filename}"
         return image_name, image_path
     
     def delete_image(self):
         if self.photo_path:
-            path_to_photo = (self.photo_path).replace("/", "\\")
+            path_to_photo = self.photo_path
 
             if os.path.exists(os.path.join(Config.UPLOAD_FOLDER, path_to_photo)):
                 os.remove(os.path.join(Config.UPLOAD_FOLDER, path_to_photo))
@@ -69,17 +69,17 @@ class Post(db.Model):
     
     @staticmethod
     def save_image(file, id):
-        if not os.path.exists(f"{Config.UPLOAD_FOLDER}\\posts\\{id}"):
-            os.makedirs(f"{Config.UPLOAD_FOLDER}\\posts\\{id}")
+        if not os.path.exists(f"{Config.UPLOAD_FOLDER}/posts/{id}"):
+            os.makedirs(f"{Config.UPLOAD_FOLDER}/posts/{id}")
 
-        file.save(os.path.join(f"{Config.UPLOAD_FOLDER}\\posts\\{id}", file.filename))
+        file.save(os.path.join(f"{Config.UPLOAD_FOLDER}/posts/{id}", file.filename))
         image_name = file.filename
         image_path = f"posts/{id}/{file.filename}"
         return image_name, image_path
     
     def delete_image(self):
         if self.image_path:
-            path_to_photo = (self.image_path).replace("/", "\\")
+            path_to_photo = self.image_path
 
             if os.path.exists(os.path.join(Config.UPLOAD_FOLDER, path_to_photo)):
                 os.remove(os.path.join(Config.UPLOAD_FOLDER, path_to_photo))

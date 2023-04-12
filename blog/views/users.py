@@ -34,7 +34,7 @@ def profile(username):
     user = User.query.filter_by(username=username).first_or_404()
     form.username.default = user.username
     if user.photo_path and user.photo_name:
-        path_to_image = f"{Config.UPLOAD_FOLDER}" + "\\" + f"{user.photo_path}".replace("/", "\\")
+        path_to_image = f"{Config.UPLOAD_FOLDER}" + "/" + f"{user.photo_path}"
         form.photo.data = Image.open(path_to_image)
     form.process()
     if request.method == 'POST':
@@ -72,9 +72,9 @@ def delete_profile(username):
 
     if user.photo_path and user.photo_name:
         User.delete_image(user)
-        path_to_folder = f"{Config.UPLOAD_FOLDER}\\users\\{user.id}\\{user.username}"
+        path_to_folder = f"{Config.UPLOAD_FOLDER}/users/{user.id}/{user.username}"
         os.rmdir(path_to_folder)
-        os.rmdir(path_to_folder.replace(f"\\{username}", ""))
+        os.rmdir(path_to_folder.replace(f"/{username}", ""))
     db.session.delete(user)
     db.session.commit()
     flash("Профиль был успешно удален", "success")
