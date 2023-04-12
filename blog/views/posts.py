@@ -75,9 +75,9 @@ def update_post(id):
     form.title.default = post.title
     form.body.default = post.body
     if post.image_path and post.image_name:
-        path_to_image = f"{Config.UPLOAD_FOLDER}" + "\\" + f"{post.image_path}".replace("/", "\\")
+        path_to_image = f"{Config.UPLOAD_FOLDER}" + "/" + f"{post.image_path}"
         form.photo.data = Image.open(path_to_image)
-        name_image = path_to_image.split("\\")[-1]
+        name_image = path_to_image.split("/")[-1]
     form.submit.label.text = "Изменить статью"
     form.process()
     form.tags.choices = [(t.id, t.title) for t in Tag.query.all()]
@@ -119,7 +119,7 @@ def delete_post(id):
 
     if post.image_path and post.image_name:
         Post.delete_image(post)
-        path_to_folder = f"{Config.UPLOAD_FOLDER}\\posts\\{post.id}"
+        path_to_folder = f"{Config.UPLOAD_FOLDER}/posts/{post.id}"
         os.rmdir(path_to_folder)
     db.session.delete(post)
     db.session.commit()
