@@ -29,7 +29,7 @@ jobs:
         run: |
           echo "WEB_IMAGE=$(echo ${{ env.WEB_IMAGE }})" >> $GITHUB_ENV
       - name: Log in to Github Packages
-        run: echo ${ REGISTRY_TOKEN} | docker login ghcr.io -u ${{ secrets.NAMESPACE }} --password-stdin
+        run: echo ${REGISTRY_TOKEN} | docker login ghcr.io -u ${{ secrets.NAMESPACE }} --password-stdin
         env:
           REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
       - name: Pull Images
