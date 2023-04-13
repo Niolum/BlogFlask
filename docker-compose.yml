@@ -15,21 +15,13 @@ services:
       - ./.env
     volumes:
       - .:/blogflask
-    depends_on:
-      - postgres
-  app_migrate:
-    extends:
-      service: 'app'
-    container_name: 'flask-migrate'
     command: >
-      /bin/sh -c "flask --app run db upgrade"
-  app_run:
-    extends:
-      service: app
-    container_name: 'flask-run'
-    command: gunicorn --bind 0.0.0.0:5000 run:app
+      /bin/sh -c "flask --app run db upgrade
+      && gunicorn --bind 0.0.0.0:5000 run:app"
     ports:
       - 5000:5000
+    depends_on:
+      - postgres
 
 volumes:
   blogdb:
