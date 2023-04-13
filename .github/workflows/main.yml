@@ -25,7 +25,7 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.POSTGRS_DB }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
         run: |
           echo "WEB_IMAGE=$(echo ${{ env.WEB_IMAGE }})" >> $GITHUB_ENV
       - name: Log in to Github Packages
@@ -45,7 +45,7 @@ jobs:
           echo 'SECRET_KEY=${{ secrets.SECRET_KEY }}' >> .env
           echo 'POSTGRES_USER=${{ secrets.POSTGRES_USER }}' >> .env
           echo 'POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}' >> .env
-          echo 'POSTGRES_DB=${{ secrets.POSTGRS_DB }}' >> .env
+          echo 'POSTGRES_DB=${{ secrets.POSTGRES_DB }}' >> .env
           cat .env
           docker-compose -f docker-compose.yml build
       - name: Push Images
@@ -70,7 +70,7 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.POSTGRS_DB }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
       - name: Copy repo
         uses: appleboy/scp-action@master
         env:
@@ -91,7 +91,7 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.POSTGRS_DB }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
         with:
           HOST: ${{ secrets.HOST }}
           USERNAME: ${{ secrets.USERNAME }}
@@ -106,7 +106,7 @@ jobs:
             echo 'SECRET_KEY=${{ secrets.SECRET_KEY }}' >> .env
             echo 'POSTGRES_USER=${{ secrets.POSTGRES_USER }}' >> .env
             echo 'POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}' >> .env
-            echo 'POSTGRES_DB=${{ secrets.POSTGRS_DB }}' >> .env
+            echo 'POSTGRES_DB=${{ secrets.POSTGRES_DB }}' >> .env
             source .env
             docker login ghcr.io -u ${{ secrets.NAMESPACE }} -p ${{ secrets.REGISTRY_TOKEN }}
             docker pull $WEB_IMAGE
