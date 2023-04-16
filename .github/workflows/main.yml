@@ -130,10 +130,10 @@ jobs:
             echo 'POSTGRES_DB=${{ secrets.POSTGRES_DB }}' >> .env
             echo 'CACHE_TYPE=${{ secrets.CACHE_TYPE }}' >> .env
             echo 'CACHE_REDIS_HOST=${{ secrets.CACHE_REDIS_HOST }}' >> .env
-            echo 'CACHE_REDIS_PORT: ${{ secrets.CACHE_REDIS_PORT }}' >> .env
-            echo 'CACHE_REDIS_DB: ${{ secrets.CACHE_REDIS_DB }}' >> .env
-            echo 'CACHE_REDIS_URL: ${{ secrets.CACHE_REDIS_URL }}' >> .env
-            echo 'CACHE_DEFAULT_TIMEOUT: ${{ secrets.CACHE_DEFAULT_TIMEOUT }}' >> .env
+            echo 'CACHE_REDIS_PORT=${{ secrets.CACHE_REDIS_PORT }}' >> .env
+            echo 'CACHE_REDIS_DB=${{ secrets.CACHE_REDIS_DB }}' >> .env
+            echo 'CACHE_REDIS_URL=${{ secrets.CACHE_REDIS_URL }}' >> .env
+            echo 'CACHE_DEFAULT_TIMEOUT=${{ secrets.CACHE_DEFAULT_TIMEOUT }}' >> .env
             source .env
             docker login ghcr.io -u ${{ secrets.NAMESPACE }} -p ${{ secrets.REGISTRY_TOKEN }}
             docker pull $WEB_IMAGE
