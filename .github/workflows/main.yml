@@ -26,6 +26,12 @@ jobs:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          CACHE_TYPE: ${{ secrets.CACHE_TYPE }}
+          CACHE_REDIS_HOST: ${{ secrets.CACHE_REDIS_HOST }}
+          CACHE_REDIS_PORT: ${{ secrets.CACHE_REDIS_PORT }}
+          CACHE_REDIS_DB: ${{ secrets.CACHE_REDIS_DB }}
+          CACHE_REDIS_URL: ${{ secrets.CACHE_REDIS_URL }}
+          CACHE_DEFAULT_TIMEOUT: ${{ secrets.CACHE_DEFAULT_TIMEOUT }}
         run: |
           echo "WEB_IMAGE=$(echo ${{ env.WEB_IMAGE }})" >> $GITHUB_ENV
       - name: Log in to Github Packages
@@ -37,7 +43,6 @@ jobs:
           docker pull ${{ env.WEB_IMAGE }} || true
       - name: Build Images
         run: |
-          ls
           echo 'DBUSER=${{ secrets.DBUSER }}' > .env
           echo 'DBPASS=${{ secrets.DBPASS }}' >> .env
           echo 'DBNAME=${{ secrets.DBNAME }}' >> .env
@@ -46,7 +51,12 @@ jobs:
           echo 'POSTGRES_USER=${{ secrets.POSTGRES_USER }}' >> .env
           echo 'POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}' >> .env
           echo 'POSTGRES_DB=${{ secrets.POSTGRES_DB }}' >> .env
-          cat .env
+          echo 'CACHE_TYPE=${{ secrets.CACHE_TYPE }}' >> .env
+          echo 'CACHE_REDIS_HOST=${{ secrets.CACHE_REDIS_HOST }}' >> .env
+          echo 'CACHE_REDIS_PORT: ${{ secrets.CACHE_REDIS_PORT }}' >> .env
+          echo 'CACHE_REDIS_DB: ${{ secrets.CACHE_REDIS_DB }}' >> .env
+          echo 'CACHE_REDIS_URL: ${{ secrets.CACHE_REDIS_URL }}' >> .env
+          echo 'CACHE_DEFAULT_TIMEOUT: ${{ secrets.CACHE_DEFAULT_TIMEOUT }}' >> .env
           docker-compose -f docker-compose.yml build
       - name: Push Images
         run: |
@@ -71,6 +81,12 @@ jobs:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          CACHE_TYPE: ${{ secrets.CACHE_TYPE }}
+          CACHE_REDIS_HOST: ${{ secrets.CACHE_REDIS_HOST }}
+          CACHE_REDIS_PORT: ${{ secrets.CACHE_REDIS_PORT }}
+          CACHE_REDIS_DB: ${{ secrets.CACHE_REDIS_DB }}
+          CACHE_REDIS_URL: ${{ secrets.CACHE_REDIS_URL }}
+          CACHE_DEFAULT_TIMEOUT: ${{ secrets.CACHE_DEFAULT_TIMEOUT }}
       - name: Copy repo
         uses: appleboy/scp-action@master
         env:
@@ -92,6 +108,12 @@ jobs:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          CACHE_TYPE: ${{ secrets.CACHE_TYPE }}
+          CACHE_REDIS_HOST: ${{ secrets.CACHE_REDIS_HOST }}
+          CACHE_REDIS_PORT: ${{ secrets.CACHE_REDIS_PORT }}
+          CACHE_REDIS_DB: ${{ secrets.CACHE_REDIS_DB }}
+          CACHE_REDIS_URL: ${{ secrets.CACHE_REDIS_URL }}
+          CACHE_DEFAULT_TIMEOUT: ${{ secrets.CACHE_DEFAULT_TIMEOUT }}
         with:
           HOST: ${{ secrets.HOST }}
           USERNAME: ${{ secrets.USERNAME }}
@@ -107,6 +129,12 @@ jobs:
             echo 'POSTGRES_USER=${{ secrets.POSTGRES_USER }}' >> .env
             echo 'POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}' >> .env
             echo 'POSTGRES_DB=${{ secrets.POSTGRES_DB }}' >> .env
+            echo 'CACHE_TYPE=${{ secrets.CACHE_TYPE }}' >> .env
+            echo 'CACHE_REDIS_HOST=${{ secrets.CACHE_REDIS_HOST }}' >> .env
+            echo 'CACHE_REDIS_PORT: ${{ secrets.CACHE_REDIS_PORT }}' >> .env
+            echo 'CACHE_REDIS_DB: ${{ secrets.CACHE_REDIS_DB }}' >> .env
+            echo 'CACHE_REDIS_URL: ${{ secrets.CACHE_REDIS_URL }}' >> .env
+            echo 'CACHE_DEFAULT_TIMEOUT: ${{ secrets.CACHE_DEFAULT_TIMEOUT }}' >> .env
             source .env
             docker login ghcr.io -u ${{ secrets.NAMESPACE }} -p ${{ secrets.REGISTRY_TOKEN }}
             docker pull $WEB_IMAGE
