@@ -10,12 +10,14 @@ from blog.models import Post, Tag, User
 from blog.forms import PostForm, CommentForm
 from blog.utils import allowed_file
 from blog.config import Config
+from blog.cache import cache
 
 
 posts = Blueprint('posts', __name__, url_prefix='/posts')
 
 
 @posts.route("/", methods=["GET"])
+@cache.cached(timeout=30, query_string=True)
 def all_posts():
     posts = Post.query.all()
     return render_template("posts/post_list.html", posts=posts)
@@ -55,6 +57,7 @@ def new_post():
     return render_template("posts/new_post.html", form=form, title_page=title_page)
 
 @posts.route("/<int:id>", methods=["GET"])
+@cache.cached(timeout=30, query_string=True)
 def get_post(id):
     post = Post.query.get_or_404(id)
     form = CommentForm()
@@ -127,12 +130,14 @@ def delete_post(id):
     return redirect(url_for("home"))
 
 @posts.route("/<username>", methods=["GET"])
+@cache.cached(timeout=30, query_string=True)
 def get_posts_by_username(username):
     user = User.query.filter_by(username=username).first()
     posts = Post.query.filter_by(author_id=user.id).all()
     return render_template("posts/post_list.html", posts=posts)
 
 @posts.route("/tag/<title>", methods=["GET"])
+@cache.cached(timeout=30, query_string=True)
 def get_posts_by_tag(title):
     posts = Post.query.join(Post.tags).filter(Tag.title==title).order_by(Post.created.desc()).all()
     return render_template("posts/post_list.html", posts=posts)

@@ -3,12 +3,14 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from blog import db
 from blog.models import Tag
 from blog.forms import TagForm
+from blog.cache import cache
 
 
 tags = Blueprint("tags", __name__, url_prefix="/tags")
 
 
 @tags.route("/", methods=["GET"])
+@cache.cached(timeout=30, query_string=True)
 def all_tags():
     tags = Tag.query.all()
     return render_template("tags/tag_list.html", tags=tags)

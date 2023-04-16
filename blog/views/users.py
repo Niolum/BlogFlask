@@ -9,18 +9,21 @@ from blog.models import User
 from blog.utils import allowed_file
 from blog.forms import ProfileForm
 from blog.config import Config
+from blog.cache import cache
 
 
 
 users = Blueprint('users', __name__, url_prefix='/users')
 
 @users.route('/', methods=['GET'])
+@cache.cached(timeout=30, query_string=True)
 def all_users():
     users = User.query.all()
     return render_template('users/user_list.html', users=users)
 
 
 @users.route('/<username>', methods=['GET'])
+@cache.cached(timeout=30, query_string=True)
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     return render_template('users/user.html', user=user)
