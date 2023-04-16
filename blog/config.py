@@ -18,8 +18,6 @@ CACHE_REDIS_DB = os.environ['CACHE_REDIS_DB']
 CACHE_REDIS_URL = os.environ['CACHE_REDIS_URL']
 CACHE_DEFAULT_TIMEOUT = os.environ['CACHE_DEFAULT_TIMEOUT']
 
-WHITENOISE_MAX_AGE = os.environ['WHITENOISE_MAX_AGE']
-
 database_url = f"postgresql+psycopg2://{DBUSER}:{DBPASS}@{DBHOST}/{DBNAME}"
 
 SQLALCHEMY_DATABASE_URI = database_url
