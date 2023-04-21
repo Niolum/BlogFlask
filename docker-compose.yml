@@ -24,7 +24,7 @@ services:
       - postgres
   
   redis:
-    image: redis
+    image: redis:alpine
     container_name: redis-container
     ports:
       - 6379:6379
