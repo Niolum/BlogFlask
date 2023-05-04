@@ -72,6 +72,7 @@ a {
 .post-list-content {
     background-color: rgb(247, 247, 247);
     min-height: 80%;
+    min-width: 80vw;
     padding: 0 30px;
     margin: 40px 0;
     border-radius: 1.4rem;
@@ -80,8 +81,9 @@ a {
 .post-list {
     margin-top: 35px;
     display: grid;
-    justify-content:space-between;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    /* justify-content:space-between; */
+    justify-content: center;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
     grid-column-gap: 10%;
     grid-row-gap: 2em;
     padding-bottom:35px;
@@ -105,6 +107,7 @@ a {
 
 .card {
     border-radius: 1 !important;
+    /* min-width: 50% !important; */
 }
 
 .card-img {
@@ -124,7 +127,9 @@ a {
 .card-post-info {
     display: flex;
     justify-content: space-between;
-    height: 40px;
+    height: 54px;
+    margin-bottom: 15px;
+    overflow: hidden;
 }
 
 .card-post-dop-info {
@@ -134,10 +139,14 @@ a {
 }
 
 .card-info-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
     height: 100px;
+    overflow: hidden;
 }
 
-.card-title {
+/* .card-title {
 	position: relative;
 	color: #000000;
 	font-size: 1.25rem;
@@ -166,9 +175,27 @@ a {
 
 .card-title::before {
 	transition: width 0.35s;
+} */
+
+.card-title {
+    background: 
+      linear-gradient(to right, rgb(255, 255, 255), rgb(255, 255, 255)),
+      linear-gradient(to right, rgb(147 18 18), rgb(165 50 131), rgb(11 131 251));
+    background-size: 100% 0.1em, 0 0.1em;
+    background-position: 100% 100%, 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 400ms;
+    text-decoration: none;
+    color: #000000;
+}
+  
+.card-title:hover,
+.card-title:focus {
+    background-size: 0 0.1em, 100% 0.1em;
+    color: rgb(63, 120, 185);
 }
 
-.card-author-link {
+/* .card-author-link {
 	position: relative;
 	color: #000000;
 	text-decoration: none;
@@ -196,6 +223,24 @@ a {
 
 .card-author-link::before {
 	transition: width 0.35s;
+} */
+
+.card-author-link {
+    background: 
+      linear-gradient(to right, rgb(255, 255, 255), rgb(255, 255, 255)),
+      linear-gradient(to right, rgb(147 18 18), rgb(165 50 131), rgb(11 131 251));
+    background-size: 100% 0.1em, 0 0.1em;
+    background-position: 100% 100%, 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 400ms;
+    text-decoration: none;
+    color:#000000
+}
+  
+.card-author-link:hover,
+.card-author-link:focus {
+    background-size: 0 0.1em, 100% 0.1em;
+    color: rgb(63, 120, 185);
 }
 
 
@@ -203,7 +248,8 @@ a {
 
 .post-detail-content {
     background-color: rgb(247, 247, 247);
-    width: 80%;
+    /* width: 80%; */
+    width: 90vw;
     min-height: 80%;
     padding: 20px 30px;
     margin: 40px auto;
@@ -217,10 +263,13 @@ a {
     min-height: 70%;
     padding: 20px;
     margin: auto;
-    width: 85%;
+    /* width: 85%; */
+    width: 80vw;
     background-color: #fff;
     border-radius: 1.4rem;
     box-shadow: 0 12px 48px rgba(130, 166, 206, 0.18);
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .post-title {

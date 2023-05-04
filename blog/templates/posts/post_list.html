@@ -19,7 +19,7 @@
     {% endfor %}
     <div class="post-list fluid">
       {% for post in posts %}
-        <div class="card post-card rounded-bottom fluid" style="width: 18em;">
+        <div class="card post-card rounded-bottom fluid">
           <div class="card-img rounded-top">
             <a href="{{ url_for('posts.get_post', id=post.id) }}">
               {% if post.image_path %}
