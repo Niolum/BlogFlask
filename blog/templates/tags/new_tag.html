@@ -10,7 +10,7 @@
 
       {% for category, message in get_flashed_messages(with_categories=True) %}
       <div id="alert" class="alert alert-{{category}}">
-        <span>Ошибка: {{ message }}</span>
+        <span class="message">Ошибка: {{ message }}</span>
         <button id="close-btn" class="close-btn btn btn-dark"">&#10007;</button>
         <label for="pop-checkbox" class="close-block"></label>
       </div>

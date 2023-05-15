@@ -8,10 +8,10 @@
             {% for category, message in get_flashed_messages(with_categories=True) %}
             {% if category == "success" %}
             <div id="alert" class="alert alert-{{category}}">
-                <span>{{ message }}</span>
+                <span class="message">{{ message }}</span>
             {% else %}
             <div id="alert" class="alert alert-{{category}}">
-                <span>Ошибка: {{ message }}</span>
+                <span class="message">Ошибка: {{ message }}</span>
             {% endif %}
                 <button id="close-btn" class="close-btn btn btn-dark"">&#10007;</button>
                 <label for="pop-checkbox" class="close-block"></label>
