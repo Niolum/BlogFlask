@@ -17,7 +17,7 @@ posts = Blueprint('posts', __name__, url_prefix='/posts')
 
 
 @posts.route("/", methods=["GET"])
-@cache.cached(timeout=30, query_string=True)
+@cache.cached(timeout=10, query_string=True)
 def all_posts():
     posts = Post.query.all()
     return render_template("posts/post_list.html", posts=posts)

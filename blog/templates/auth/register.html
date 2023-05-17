@@ -10,10 +10,10 @@
       {% for category, message in get_flashed_messages(with_categories=True) %}
       {% if category == "success" %}
       <div id="alert" class="alert alert-{{category}}">
-        <span>{{ message }}</span>
+        <span class="message">{{ message }}</span>
       {% else %}
       <div id="alert" class="alert alert-{{category}}">
-        <span>Ошибка: {{ message }}</span>
+        <span class="message">Ошибка: {{ message }}</span>
       {% endif %}
         <button id="close-btn" class="close-btn btn btn-dark"">&#10007;</button>
         <label for="pop-checkbox" class="close-block"></label>
@@ -22,7 +22,7 @@
 
 
 
-      <form action="" method="post" enctype="multipart/form-data">
+      <form action="" method="post" enctype="multipart/form-data" class="form-register">
         {{ form.csrf_token() }}
 
         {{ form.username.label(hidden=True)}}
@@ -40,7 +40,7 @@
         {% for error in form.confirm.errors %}
             {{ erorr }}
         {% endfor %}
-        <div class="input-group mt-4 mb-3">
+        <div class="input-group mt-4 mb-3 upload-file">
           {{ form.photo.label(class_="input-group-text", hidden=True) }}
           {{ form.photo(class_="form-control") }}
           {% for error in form.photo.errors %}

@@ -2,16 +2,16 @@
 
 
 {% block content %}
-<div class="content">
+<div class="content-detail">
     <div class="post-detail-content">
         <div class="post-detail">
             {% for category, message in get_flashed_messages(with_categories=True) %}
             {% if category == "success" %}
             <div id="alert" class="alert alert-{{category}}">
-                <span>{{ message }}</span>
+                <span class="message">{{ message }}</span>
             {% else %}
             <div id="alert" class="alert alert-{{category}}">
-                <span>Ошибка: {{ message }}</span>
+                <span class="message">Ошибка: {{ message }}</span>
             {% endif %}
                 <button id="close-btn" class="close-btn btn btn-dark"">&#10007;</button>
                 <label for="pop-checkbox" class="close-block"></label>
@@ -62,12 +62,12 @@
             <h1 class="comments-head">Комментарии</h1>
             <div class="comment">
                 <form action="{{ url_for('comments.create_comment', post_id=post.id) }}" method="post" enctype="multipart/form-data">
-                    <div class="form-group">
+                    <div class="form-group form-new-comment">
                         {{ form.csrf_token() }}
 
                         <label class="form-label" for="message" hidden>Комментарий</label>
                         <textarea rows="3" placeholder="Написать комментрарий" class="form-control" id="message" name="message" required></textarea>
-                        <input id="submit" name="submit" type="submit" value="Отправить" class="btn btn-outline-dark">
+                        <input id="submit" name="submit" type="submit" value="Отправить" class="btn btn-outline-dark btn-new-comment">
                     </div>
                 </form>
             </div>
@@ -96,7 +96,7 @@
                         </div>
                         {% if current_user.id == comment.owner_id %}
                             <form action="{{ url_for('comments.delete_comment', comment_id=comment.id) }}" method="post">
-                                <button type="button" class="btn btn-outline-dark">Удалить комментарий</button>
+                                <button type="button" class="btn btn-outline-dark btn-delete-comment">Удалить комментарий</button>
                             </form>
                             
                         {% endif %}
