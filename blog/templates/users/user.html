@@ -31,7 +31,7 @@
         <div class="user-detail">
           <div class="user-post-list fluid">
               {% for post in user.posts %}
-                <div class="card post-card rounded-bottom fluid" style="width: 18em;">
+                <div class="card post-card rounded-bottom fluid">
                   <div class="card-img rounded-top">
                     <a href="{{ url_for('posts.get_post', id=post.id) }}">
                       <img src="{{ url_for('static', filename='media/' + post.image_path) }}" class="card-img-top" alt="{{ post.image_name}}">
